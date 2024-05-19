@@ -16,3 +16,6 @@ variable "account_tier" {
 variable "base" {
   type = string
 }
+variable "access_tier" {
+  type = string
+}

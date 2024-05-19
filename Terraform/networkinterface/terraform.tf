@@ -3,10 +3,14 @@ resource "azurerm_network_interface" "nic" {
   resource_group_name = var.resource_group
   location = var.location
   
+  
   ip_configuration {
+  
     name = "rule-1"
-    private_ip_address_allocation = "Static"
-    private_ip_address = "192.168.1.69"
+    private_ip_address_allocation = "Dynamic"
     subnet_id = var.subnet_id
+
+  
   }
+
 }
