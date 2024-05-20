@@ -19,10 +19,15 @@ pipeline{
                script{
                    withCredentials([azureServicePrincipal('azure_principal_id')]) {
                                 sh 'az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID'
+
+
+                       dir('Terraform'){
                                 sh 'terraform --version'
                                 sh 'terraform init -reconfigure'
                                 sh 'terraform plan'
                                 sh 'terraform apply -auto-approve'
+                       }
+                               
                      }
 
                }
