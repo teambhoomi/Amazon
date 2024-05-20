@@ -14,30 +14,16 @@ pipeline{
             }
         }
 
-        stage('terraform') {
-            steps {
-                script{
+       stage('terraform') {
+           steps{
+               script{
+                   withCredentials([azureServicePrincipal('credentials_id')]) {
+                                sh 'az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID'
+                     }
 
-                    azureCredentials = credentials(AZURE_CREDENTIALS_ID) 
-                    withCredentials([azureServicePrincipal(credentialsId: AZURE_CREDENTIALS_ID, 
-                    subscriptionId: azureCredentials.subscriptionId, clientId: azureCredentials.clientId, 
-                    clientSecret: azureCredentials.clientSecret, tenant: azureCredentials.tenant)]) {
-                            dir('Terraform') {
-                                sh 'echo ==============Terraform version================'
-                                sh 'terraform --version'
-                                sh 'echo ==============Terraform init=================='
-                                sh 'terraform init -reconfigure'
-                                sh 'echo ==============Plan=========================='
-                                sh 'terraform plan'
-                                sh 'echo =================Apply==================='
-                                sh 'terraform apply -auto-configure'
-                            }
-                    }
-                     
-               
-                }         
-            }
-        }
+               }
+           }
+       }
 
         // stage('terraform plan') {
         //     steps {
