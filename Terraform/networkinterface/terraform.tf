@@ -9,6 +9,7 @@ resource "azurerm_network_interface" "nic" {
     name = "rule-1"
     private_ip_address_allocation = "Dynamic"
     subnet_id = var.subnet_id
+    public_ip_address_id = var.public_ip_address_id
 
   
   }

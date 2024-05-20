@@ -1,4 +1,4 @@
-variable "nic_name" {
+variable "public_ip_name" {
   type = string
 }
 
@@ -8,12 +8,9 @@ variable "resource_group" {
 
 variable "location" {
   type = string
+
 }
 
-variable "subnet_id" {
-  type = string
-}
-
-variable "public_ip_address_id" {
+variable "allocation_method" {
   type = string
 }

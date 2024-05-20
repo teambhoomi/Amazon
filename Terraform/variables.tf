@@ -1,19 +1,20 @@
 variable "subscription_id" {
-  default = ""
-  
+  //default = ""
+
 }
 
 variable "client_id" {
-  default = ""
-  
+ //default = ""
+
 }
 
 variable "client_secret" {
-  default = ""
-  
+  //default = ""
+
 }
 
 variable "tenant_id" {
-  default = ""
-  
+  //default = ""
+
+
 }

@@ -17,7 +17,6 @@ variable "admin_username" {
 variable "admin_password" {
   type = string
   sensitive = true
-  default = "Jenkins@12345"
 }
 
 variable "network_interface_ids" {
@@ -47,3 +46,4 @@ variable "image_version" {
 variable "offer" {
   type = string
 }
+
