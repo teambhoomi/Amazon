@@ -1,15 +1,7 @@
-
 pipeline{
     agent any
     tools{
         maven 'maven'
-        terraform 'terraform40516'
-    }
-
-    environment{
-        AZURE_CREDENTIALS = credentials('azure_principal_id')
-        
-
     }
 
     stages{
@@ -19,39 +11,19 @@ pipeline{
             }
         }
 
-        stage('azure deploy') {
-            steps {
-
-                script{
-                    azureLogin(servicePrincipalId: "${AZURE_CREDENTIALS.clientId}",
-                                servicePrincipalKey: "${AZURE_CREDENTIALS.clientSecret}",
-                                tenantId: "${AZURE_CREDENTIALS.tenantId}",
-                                subscriptionId: "${AZURE_CREDENTIALS.subscriptionId}")
-                    sh 'az group create --name project --location North Europe'
-                    
-                }
-                
-            }
-        }
         stage('terraform init') {
-            steps{
-                script{
-                    dir('Terraform') {
+            steps {
+                dir('Terraform') {
+                        sh 'terraform --version'
                         sh 'terraform init'
-                    }
-                }
+                }         
             }
         }
-
-        stage
 
         stage('terraform plan') {
             steps {
-                script{
-                    dir('Terraform'){
-                        sh 'terraform plan'
-                    }
-                    
+                dir('Terraform') {
+                    sh 'terraform plan'
                 }
                 
             }
@@ -59,12 +31,9 @@ pipeline{
 
         stage('terraform apply') {
             steps {
-                script{
-                    dir('Terraform'){
-                        sh 'terraform apply -auto-approve'
-                    }
+                dir('Terraform') {
+                    sh 'terraform apply -auto-configure'
                 }
-                sh 'terraform apply -auto-configure'
             }
         }
 
