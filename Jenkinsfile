@@ -11,6 +11,12 @@ pipeline{
             }
         }
 
+        stage('terraform') {
+            steps {
+                sh 'terraform --version'
+            }
+        }
+
         stage('sonar'){
             steps{
                 withSonarQubeEnv('sonarqube') {
