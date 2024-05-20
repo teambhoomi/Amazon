@@ -193,3 +193,103 @@ module "public_ip_sq_jf" {
   location = module.resource_group_sq_jf.location_out
   
 }
+##################################################
+
+#Docker slave server
+
+data "azurerm_resource_group" "rsg_docker" {
+  name = "project"
+}
+
+module "resource_group_docker" {
+  source = "./resourcegroup"
+  location = "North Europe"
+  base = "project"
+
+}
+
+module "virtual_networks_docker" {
+  source         = "./virtualnetworks"
+  location       = data.azurerm_resource_group.rsg_docker.location
+  resource_group = data.azurerm_resource_group.rsg_docker.name
+  address_space  = ["10.0.0.0/16"]
+  base           = "docker-vnet"
+
+}
+
+module "network_security_group_docker" {
+  source         = "./networksecuritygroup"
+  base           = "docker-nsg"
+  resource_group = data.azurerm_resource_group.rsg_docker.name
+  location       = data.azurerm_resource_group.rsg_docker.location
+
+}
+
+module "azurerm_subnet_network_security_group_association_docker" {
+  source = "./nsgassociatetonic"
+  subnet_id = module.subnets_docker.subnet_id_out
+  network_security_group_id = module.network_security_group_docker.nsg_id_out
+}
+
+module "nsg-associate-nic_docker" {
+  source = "./nsgtonic"
+  nsg_id = module.network_security_group_docker.nsg_id_out
+  nic_id = module.network_interface_docker.network_interface_ids_out
+}
+
+module "subnets_docker" {
+  source           = "./subnets"
+  subnet_name      = "docker-subnet"
+  resource_group   = data.azurerm_resource_group.rsg_docker.name
+  vnet_name        = module.virtual_networks_docker.vnet_name_out
+  address_prefixes = ["10.0.1.0/24"]
+
+}
+
+module "network_interface_docker" {
+  source         = "./networkinterface"
+  nic_name       = "nic-2"
+  resource_group = data.azurerm_resource_group.rsg_docker.name
+  location       = data.azurerm_resource_group.rsg_docker.location
+  subnet_id      = module.subnets_docker.subnet_id_out
+  public_ip_address_id = module.public_ip_docker.public_ip_out
+
+}
+
+module "azurerm_linux_virtual_machine_docker" {
+  source         = "./linux-vm"
+  vm_name        = "Docker-VM"
+  resource_group = data.azurerm_resource_group.rsg_docker.name
+  location       = data.azurerm_resource_group.rsg_docker.location
+  admin_username = "docker"
+  admin_password = "Docker@12345"
+  size           = "Standard_D2s_v3"
+
+  network_interface_ids = [module.network_interface_docker.network_interface_ids_out]
+
+  offer                = "0001-com-ubuntu-server-jammy"
+  publisher            = "Canonical"
+  sku                  = "22_04-lts"
+  storage_account_type = "Standard_LRS"
+  image_version        = "latest"
+}
+
+module "public_ip_docker" {
+  source = "./public-ipaddress"
+  public_ip_name = "docker-ip"
+  allocation_method = "Static"
+  resource_group = data.azurerm_resource_group.rsg_docker.name
+  location = data.azurerm_resource_group.rsg_docker.location
+}
+
+
+############################################
+
+#ACR
+
+module "container_registry" {
+  source = "./containerregistry"
+  location = module.resource_group.location_out
+  resource_group = module.resource_group.rg_out
+  base = "projectcontainerr"
+}
