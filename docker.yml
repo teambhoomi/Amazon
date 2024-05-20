@@ -1,0 +1,23 @@
+---
+- name: Install Docker on Ubuntu
+  hosts: all
+  become: yes
+  tasks:
+    - name: Update the apt package index
+      apt:
+        update_cache: yes
+
+    - name: Update the apt package index again
+      apt:
+        update_cache: yes
+
+    - name: Install the latest version of Docker Engine and containerd
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Ensure Docker service is enabled and started
+      systemd:
+        name: docker
+        enabled: yes
+        state: started

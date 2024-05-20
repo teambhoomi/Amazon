@@ -1,0 +1,20 @@
+---
+- name: install maven if not present already
+  hosts: all
+  become: true
+
+  tasks: 
+    - name: update system
+      apt: 
+        update_cache: yes
+      
+    - name: check maven installed
+      command: mvn --version
+      register: mvn_exists
+      ignore_errors: yes
+
+    - name: Install Maven
+      apt:
+        name: maven
+        state: present
+      when: mvn_exists.rc != 0

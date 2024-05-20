@@ -1,0 +1,16 @@
+---
+- name: Install Azure CLI
+  hosts: all 
+  become: yes
+  tasks:
+
+    - name: Check if Azure CLI is already installed
+      command: which az
+      register: az_cli_path
+      ignore_errors: true
+
+    - name: Install Azure CLI using apt (Debian/Ubuntu)
+      apt:
+        name: azure-cli
+        state: present
+      when: az_cli_path.rc != 0
