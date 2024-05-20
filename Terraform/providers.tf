@@ -18,8 +18,8 @@ provider "azurerm" {
       prevent_deletion_if_contains_resources = false
     }
   }
-  //client_id       = var.tf_var_client_id
-  //subscription_id = var.tf_var_subscription_id
-  //client_secret   = var.tf_var_client_secret
-  //tenant_id       = var.tf_var_tenant_id
+  subscription_id = var.ARM_SUBSCRIPTION_ID
+  client_id       = var.ARM_CLIENT_ID
+  client_secret   = var.ARM_CLIENT_SECRET
+  tenant_id       = var.ARM_TENANT_ID
 }
