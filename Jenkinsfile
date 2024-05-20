@@ -34,23 +34,6 @@ pipeline{
            }
        }
 
-        // stage('terraform plan') {
-        //     steps {
-        //         dir('Terraform') {
-                    
-        //         }
-                
-        //     }
-        // }
-
-        // stage('terraform apply') {
-        //     steps {
-        //         dir('Terraform') {
-        //             sh 'terraform apply -auto-configure'
-        //         }
-        //     }
-        // }
-
         stage('sonar'){
             steps{
                 withSonarQubeEnv('sonarqube') {
