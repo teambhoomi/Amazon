@@ -284,12 +284,3 @@ module "public_ip_docker" {
 
 
 ############################################
-
-#ACR
-
-module "container_registry" {
-  source = "./containerregistry"
-  location = module.resource_group.location_out
-  resource_group = module.resource_group.rg_out
-  base = "projectcontainerr"
-}
