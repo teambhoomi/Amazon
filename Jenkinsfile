@@ -3,6 +3,9 @@ pipeline{
     tools{
         maven 'maven'
     }
+    environment{
+        AZURE_CREDENTIALS_ID = 'azure_principal_id'
+    }
 
     stages{
         stage('clone'){
@@ -11,31 +14,47 @@ pipeline{
             }
         }
 
-        stage('terraform init') {
+        stage('terraform') {
             steps {
-                dir('Terraform') {
-                        sh 'terraform --version'
-                        sh 'terraform init'
+                script{
+
+                    azureCredentials = credentials(azure_principal_id) 
+                    withCredentials([azureServicePrincipal(credentialsId: AZURE_CREDENTIALS_ID, 
+                    subscriptionId: azureCredentials.subscriptionId, clientId: azureCredentials.clientId, 
+                    clientSecret: azureCredentials.clientSecret, tenant: azureCredentials.tenant)]) {
+                            dir('Terraform') {
+                                sh 'echo ==============Terraform version================'
+                                sh 'terraform --version'
+                                sh 'echo ==============Terraform init=================='
+                                sh 'terraform init -reconfigure'
+                                sh 'echo ==============Plan=========================='
+                                sh 'terraform plan'
+                                sh 'echo =================Apply==================='
+                                sh 'terraform apply -auto-configure'
+                            }
+                    }
+                     
+               
                 }         
             }
         }
 
-        stage('terraform plan') {
-            steps {
-                dir('Terraform') {
-                    sh 'terraform plan'
-                }
+        // stage('terraform plan') {
+        //     steps {
+        //         dir('Terraform') {
+                    
+        //         }
                 
-            }
-        }
+        //     }
+        // }
 
-        stage('terraform apply') {
-            steps {
-                dir('Terraform') {
-                    sh 'terraform apply -auto-configure'
-                }
-            }
-        }
+        // stage('terraform apply') {
+        //     steps {
+        //         dir('Terraform') {
+        //             sh 'terraform apply -auto-configure'
+        //         }
+        //     }
+        // }
 
         stage('sonar'){
             steps{
