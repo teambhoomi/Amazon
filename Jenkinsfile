@@ -4,7 +4,7 @@ pipeline{
         maven 'maven'
     }
     environment{
-        AZURE_CREDENTIALS_ID = 'azure_principal_id'
+        AZURE_CREDENTIALS_ID='azure_principal_id'
     }
 
     stages{
@@ -18,7 +18,7 @@ pipeline{
             steps {
                 script{
 
-                    azureCredentials = credentials(azure_principal_id) 
+                    azureCredentials = credentials(AZURE_CREDENTIALS_ID) 
                     withCredentials([azureServicePrincipal(credentialsId: AZURE_CREDENTIALS_ID, 
                     subscriptionId: azureCredentials.subscriptionId, clientId: azureCredentials.clientId, 
                     clientSecret: azureCredentials.clientSecret, tenant: azureCredentials.tenant)]) {
