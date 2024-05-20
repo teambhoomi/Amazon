@@ -11,9 +11,22 @@ pipeline{
             }
         }
 
-        stage('terraform') {
+        stage('terraform init') {
             steps {
                 sh 'terraform --version'
+                sh 'terraform init'
+            }
+        }
+
+        stage('terraform plan') {
+            steps {
+                sh 'terraform plan'
+            }
+        }
+
+        stage('terraform apply') {
+            steps {
+                sh 'terraform apply -auto-configure'
             }
         }
 
