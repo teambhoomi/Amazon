@@ -19,10 +19,10 @@ resource "azurerm_linux_virtual_machine" "linux_vm" {
       offer = var.offer
     }
      connection {
-        host = "52.169.7.111"
+        host = var.host
         type = "ssh"
-        user = "Jenkins-Master"
-        password = "Jenkins@12345"
+        user = var.user_connection
+        password = var.password_connection
       }
 
       provisioner "remote-exec" {
