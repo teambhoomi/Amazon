@@ -87,6 +87,10 @@ module "azurerm_linux_virtual_machine" {
   admin_password = "Terra@12345"
   size           = "Standard_D2s_v3"
 
+  user_connection = module.azurerm_linux_virtual_machine.admin_username
+  password_connection = module.azurerm_linux_virtual_machine.admin_password
+  host = module.public_ip.ip
+
   network_interface_ids = [module.network_interface.network_interface_ids_out]
 
   offer                = "0001-com-ubuntu-server-jammy"
