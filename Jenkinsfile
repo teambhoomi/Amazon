@@ -34,11 +34,14 @@ pipeline{
        }
         stage('terraform plan') {
             steps {
-                     dir('Terraform') {
+                script {
+                    
                         sh 'pwd'
                         sh 'ls -l'
                         sh 'terraform plan'
-                    }
+                    
+                     
+                }
             }
         }
         stage('terraform apply') {
