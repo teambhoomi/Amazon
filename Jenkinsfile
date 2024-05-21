@@ -13,6 +13,7 @@ pipeline{
                      git branch : 'master', url: 'https://github.com/teambhoomi/Amazon.git'
             }
         }
+    
 
        stage('terraform init') {
            steps{
@@ -36,7 +37,7 @@ pipeline{
                 sh 'terraform plan'
             }
         }
-        stage('terraform plan') {
+        stage('terraform apply') {
             steps {
                 sh 'terraform apply -auto-approve'
             }
