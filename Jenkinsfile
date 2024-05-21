@@ -26,6 +26,7 @@ pipeline{
                        dir('Terraform'){
                                 sh 'terraform --version'
                                 sh 'terraform init'
+                                sh 'terraform destroy --auto-approve'
                        }
                                
                      }
