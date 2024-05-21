@@ -50,7 +50,7 @@ pipeline{
                     dir('$WORKSPACE/Terraform') {
                         sh 'pwd'
                         sh 'ls -l'
-                         sh 'terraform apply -auto-approve'
+                         sh 'terraform apply --auto-approve'
                     }
                 }
             }
