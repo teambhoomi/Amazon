@@ -24,7 +24,7 @@ pipeline{
 
                        dir('Terraform'){
                                 sh 'terraform --version'
-                                sh 'terraform init -reconfigure'
+                                sh 'terraform init'
                        }
                                
                      }
@@ -35,7 +35,9 @@ pipeline{
         stage('terraform plan') {
             steps {
                      dir('Terraform') {
-                             sh 'terraform plan'
+                        sh 'pwd'
+                        sh 'ls -l'
+                        sh 'terraform plan'
                     }
             }
         }
@@ -43,6 +45,8 @@ pipeline{
             steps {
                    script{
                     dir('Terraform') {
+                        sh 'pwd'
+                        sh 'ls -l'
                          sh 'terraform apply -auto-approve'
                     }
                 }
