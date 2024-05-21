@@ -85,7 +85,7 @@ module "azurerm_linux_virtual_machine" {
   location       = module.resource_group.location_out
   admin_username = "terra"
   admin_password = "Terra@12345"
-  size           = "Standard_D1s_v3"
+  size           = "Standard_D2s_v3"
 
   network_interface_ids = [module.network_interface.network_interface_ids_out]
 
