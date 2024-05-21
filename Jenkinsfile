@@ -36,7 +36,7 @@ pipeline{
         stage('terraform plan') {
             steps {
                 script {
-                    dir('$WORKSPACE/Terraform'){
+                    dir('Terraform'){
                         sh 'pwd'
                         sh 'ls -l'
                         sh 'terraform plan'
@@ -47,7 +47,7 @@ pipeline{
         stage('terraform apply') {
             steps {
                    script{
-                    dir('$WORKSPACE/Terraform') {
+                    dir('Terraform') {
                         sh 'pwd'
                         sh 'ls -l'
                          sh 'terraform apply --auto-approve'
