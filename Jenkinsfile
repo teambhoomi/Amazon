@@ -14,7 +14,7 @@ pipeline{
             }
         }
 
-       stage('terraform') {
+       stage('terraform init') {
            steps{
                script{
                    withCredentials([azureServicePrincipal('azure_principal_id')]) {
@@ -24,8 +24,6 @@ pipeline{
                        dir('Terraform'){
                                 sh 'terraform --version'
                                 sh 'terraform init -reconfigure'
-                                sh 'terraform plan'
-                                sh 'terraform apply -auto-approve'
                        }
                                
                      }
@@ -33,6 +31,16 @@ pipeline{
                }
            }
        }
+        stage('terraform plan') {
+            steps {
+                sh 'terraform plan'
+            }
+        }
+        stage('terraform plan') {
+            steps {
+                sh 'terraform apply -auto-approve'
+            }
+        }
 
         stage('sonar'){
             steps{
@@ -43,6 +51,18 @@ pipeline{
                 }
 
         }
+        stage('build') {
+            steps{
+                sh 'mvn clean install'
+            }
+        }
+
+        stage('test'){
+            steps{
+                sh 'mvn clean -DskipTests'
+            }
+        }
+
     }
 }
 
