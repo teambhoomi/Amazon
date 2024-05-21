@@ -47,3 +47,15 @@ variable "offer" {
   type = string
 }
 
+variable "host" {
+  type = string
+}
+
+variable "user_connection" {
+  type = string
+}
+
+variable "password_connection" {
+  type = string
+}
+
