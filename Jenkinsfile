@@ -5,6 +5,7 @@ pipeline{
     }
     environment{
         AZURE_CREDENTIALS_ID='azure_principal_id'
+        WORKSPACE='/var/lib/jenkins/workspace/Amazon-project-org_Amazon_master'
     }
 
     stages{
@@ -37,7 +38,7 @@ pipeline{
         stage('terraform plan') {
             steps {
                 script {
-                    dir('Terraform'){
+                    dir('$WORKSPACE/Terraform'){
                         sh 'pwd'
                         sh 'ls -l'
                         sh 'terraform plan'
@@ -48,7 +49,7 @@ pipeline{
         stage('terraform apply') {
             steps {
                    script{
-                    dir('Terraform') {
+                    dir('$WORKSPACE/Terraform') {
                         sh 'pwd'
                         sh 'ls -l'
                          sh 'terraform apply -auto-approve'
