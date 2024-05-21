@@ -1,6 +1,6 @@
 module "resource_group" {
   source   = "./resourcegroup"
-  base     = terra"
+  base     = "terra"
   location = "Central India"
 }
 
