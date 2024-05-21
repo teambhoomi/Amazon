@@ -34,12 +34,21 @@ pipeline{
        }
         stage('terraform plan') {
             steps {
-                sh 'terraform plan'
+                script{
+                    dir('Terraform') {
+                         sh 'terraform plan'
+                    }
+                }
+               
             }
         }
         stage('terraform apply') {
             steps {
-                sh 'terraform apply -auto-approve'
+                   script{
+                    dir('Terraform') {
+                         sh 'terraform apply -auto-approve'
+                    }
+                }
             }
         }
 
