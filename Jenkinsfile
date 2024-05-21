@@ -25,6 +25,8 @@ pipeline{
                        dir('Terraform'){
                                 sh 'terraform --version'
                                 sh 'terraform init'
+                                sh 'terraform plan'
+                               sh 'terraform apply'
                        }
                                
                      }
@@ -35,12 +37,11 @@ pipeline{
         stage('terraform plan') {
             steps {
                 script {
-                    
+                    dir('Terraform'){
                         sh 'pwd'
                         sh 'ls -l'
                         sh 'terraform plan'
-                    
-                     
+                    }                    
                 }
             }
         }
