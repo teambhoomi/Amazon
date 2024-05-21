@@ -34,7 +34,7 @@ module "virtual_networks" {
   source         = "./virtualnetworks"
   location       = module.resource_group.location_out
   resource_group = module.resource_group.rg_out
-  address_space  = ["172.168.0.0/16"]
+  address_space  = ["172.16.0.0/16"]
   base           = "terra-vnet"
 
 }
@@ -64,7 +64,7 @@ module "subnets" {
   subnet_name      = "terra-subnet"
   resource_group   = module.resource_group.rg_out
   vnet_name        = module.virtual_networks.vnet_name_out
-  address_prefixes = ["172.168.1.0/22"]
+  address_prefixes = ["172.16.10.0/24"]
 
 }
 
