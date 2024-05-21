@@ -34,12 +34,9 @@ pipeline{
        }
         stage('terraform plan') {
             steps {
-                script{
-                    dir('Terraform') {
-                         sh 'terraform plan'
+                     dir('Terraform') {
+                             sh 'terraform plan'
                     }
-                }
-               
             }
         }
         stage('terraform apply') {
