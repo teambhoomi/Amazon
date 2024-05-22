@@ -46,7 +46,7 @@ variable "image_version" {
 variable "offer" {
   type = string
 }
-
+/*
 variable "host" {
   type = string
 }
@@ -58,4 +58,5 @@ variable "user_connection" {
 variable "password_connection" {
   type = string
 }
+*/
 
