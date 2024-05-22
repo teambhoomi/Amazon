@@ -38,8 +38,6 @@ pipeline{
             steps {
                 script {
                     dir('Terraform'){
-                        sh 'pwd'
-                        sh 'ls -l'
                         sh 'terraform plan'
                     }                    
                 }
@@ -49,8 +47,6 @@ pipeline{
             steps {
                    script{
                     dir('Terraform') {
-                        sh 'pwd'
-                        sh 'ls -l'
                          sh 'terraform apply --auto-approve'
                     }
                 }
