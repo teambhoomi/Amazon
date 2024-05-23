@@ -6,6 +6,13 @@ pipeline{
     environment{
         AZURE_CREDENTIALS_ID='azure_principal_id'
         WORKSPACE='/var/lib/jenkins/workspace/Amazon-project-org_Amazon_master'
+        AZURE_SUBSCRIPTION_ID='85ecb259-68dd-4069-b628-760b0f929578'
+        AZURE_TENANT_ID='0e32485b-f068-4281-bb11-a695d4ea0a0d'
+        CONTAINER_REGISTRY='projectb8.azurecr.io'
+        RESOURCE_GROUP='project'
+        REPO="projectb8"
+        IMAGE_NAME="imagedemoamazon"
+        TAG="1.0"
     }
 
     stages{
