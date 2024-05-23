@@ -13,6 +13,8 @@ pipeline{
         REPO="projectb8"
         IMAGE_NAME="imagedemoamazon"
         TAG="1.0"
+	ARTIFACTORY_SERVER = 'jfrog-artifactory-instance' // Artifactory server ID configured in Jenkins
+        ARTIFACTORY_REPO = 'artifactory-build-info'               // Target repository in Artifactory
     }
 
     stages{
@@ -74,7 +76,26 @@ pipeline{
             }
         }
 
-
+        stage('jfrog') {
+            steps {
+                script {
+                    // Define the Artifactory server
+                    def server = Artifactory.server(ARTIFACTORY_SERVER)
+                    
+                    // Define the upload spec
+                    def uploadSpec = """{
+                        "files": [{
+                            "pattern": "target/*.jar",
+                            "target": "${ARTIFACTORY_REPO}/Amazon/"
+                        }]
+                    }"""
+                    
+                    // Upload artifacts to Artifactory
+                    server.upload(uploadSpec)
+                }
+              }
+            }
+          }
 
         stage('docker build') {
             steps{
