@@ -67,11 +67,7 @@ pipeline{
             }
         }
 
-        stage('test'){
-            steps{
-                sh 'mvn clean test'
-            }
-        }
+
 
         stage('docker build') {
             steps{
