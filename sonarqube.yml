@@ -1,0 +1,84 @@
+---
+- name: Install SonarQube if not already installed
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Check if SonarQube is installed
+      command: systemctl is-active --quiet sonarqube
+      register: sonarqube_status
+      ignore_errors: true
+
+    - name: Install required dependencies
+      apt:
+        name:
+          - openjdk-11-jdk
+          - wget
+          - unzip
+        state: present
+        update_cache: yes
+      when: sonarqube_status.rc != 0
+
+    - name: Download SonarQube
+      get_url:
+        url: "https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-8.9.1.44547.zip"
+        dest: "/tmp/sonarqube.zip"
+      when: sonarqube_status.rc != 0
+
+    - name: Unzip SonarQube
+      unarchive:
+        src: "/tmp/sonarqube.zip"
+        dest: /opt/
+        remote_src: yes
+      when: sonarqube_status.rc != 0
+
+    - name: Create SonarQube user
+      user:
+        name: sonarqube
+        system: yes
+      when: sonarqube_status.rc != 0
+
+    - name: Change ownership of SonarQube directory
+      file:
+        path: /opt/sonarqube-8.9.1.44547
+        state: directory
+        owner: sonarqube
+        group: sonarqube
+        recurse: yes
+      when: sonarqube_status.rc != 0
+
+    - name: Create systemd service file for SonarQube
+      copy:
+        dest: /etc/systemd/system/sonarqube.service
+        content: |
+          [Unit]
+          Description=SonarQube service
+          After=network.target
+
+          [Service]
+          Type=simple
+          User=sonarqube
+          Group=sonarqube
+          ExecStart=/opt/sonarqube-8.9.1.44547/bin/linux-x86-64/sonar.sh start
+          ExecStop=/opt/sonarqube-8.9.1.44547/bin/linux-x86-64/sonar.sh stop
+          Restart=always
+
+          [Install]
+          WantedBy=multi-user.target
+      when: sonarqube_status.rc != 0
+
+    - name: Reload systemd daemon
+      command: systemctl daemon-reload
+      when: sonarqube_status.rc != 0
+
+    - name: Enable and start SonarQube service
+      systemd:
+        name: sonarqube
+        enabled: yes
+        state: started
+      when: sonarqube_status.rc != 0
+
+    - name: SonarQube is already installed
+      debug:
+        msg: "SonarQube is already installed and running."
+      when: sonarqube_status.rc == 0
