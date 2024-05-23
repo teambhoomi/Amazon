@@ -73,6 +73,36 @@ pipeline{
             }
         }
 
+        stage('build') {
+            steps{
+                sh "docker build -t myimage ."
+             }
+         }
+
+        stage('Example') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'acrnew', passwordVariable: 'AZURE_CLIENT_SECRET', usernameVariable: 'AZURE_CLIENT_ID')]) {
+                            sh 'az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID'
+                            sh 'az account set -s $AZURE_SUBSCRIPTION_ID'
+                            sh 'az acr login --name $CONTAINER_REGISTRY --resource-group $RESOURCE_GROUP'
+							sh "docker tag myimage projectb8.azurecr.io/imagedemoamazon:1.0"
+                            sh "docker push projectb8.azurecr.io/imagedemoamazon:1.0"
+                            
+                        }
+            }
+        }
+
+        stage('publish') {
+         steps{
+           script{
+              withDockerRegistry(credentialsId : 'dockerhub') {
+                sh "docker tag myimage rsh8828/imagedemoamazon:1.0"
+                sh "docker push rsh8828/imagedemoamazon:1.0"
+               }
+           }
+		}
+	 }
+
     }
 }
 
