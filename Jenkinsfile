@@ -90,7 +90,7 @@ pipeline{
                             sh 'az acr login --name $CONTAINER_REGISTRY --resource-group $RESOURCE_GROUP'
 			    sh "docker tag myimage projectb8.azurecr.io/imagedemoamazon:1.0"
                             sh "docker push projectb8.azurecr.io/imagedemoamazon:1.0"
-			    sh 'docker run -d -p 8092:8080 projectb8.azurecr.io/imagedemoamazon:1.0'
+			    sh 'docker run -d -p 8091:8080 projectb8.azurecr.io/imagedemoamazon:1.0'
                             
                         }
             }
